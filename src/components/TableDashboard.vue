@@ -58,11 +58,11 @@
                             <button> <span 
                                     class="bg-green-100 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-green-900">EFFETTUATA</span></button>
                         </td>
-                        <td class="px-6 py-4 text-right">
+                        <td v-if="x.status === 'P'" class="px-6 py-4 text-right">
                             <button type="button" class="my-red text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900" @click="$emit('delete-repetition', x.id)" >Disdici</button>
                         </td>
-                        <td class="px-6 py-4 text-right">
-                            <button type="button" class="my-green text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Effettuata</button>
+                        <td v-if="x.status === 'P'" class="px-6 py-4 text-right">
+                            <button type="button" class="my-green text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" @click="$emit('done-repetition', x.id)" >Effettuata</button>
                         </td>
                     </tr>
                 </tbody>
@@ -84,7 +84,7 @@ export default {
         }
     },
 
-    emits: ["delete-repetition"],
+    emits: ["delete-repetition", "done-repetition"],
 
      props: {
         repetitions: Object,

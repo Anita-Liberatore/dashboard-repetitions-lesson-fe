@@ -42,7 +42,7 @@
     <div v-if="tab == 1">
 
         <p class="font-normal text-xl  px-12 py-5 pt-8">Lista Lezioni Prenotate</p>
-        <TableDashboard :repetitions="repetitionsBooked" @delete-repetition="deleteRepetition" />
+        <TableDashboard :repetitions="repetitionsBooked" @delete-repetition="deleteRepetition" @done-repetition="doneRepetition"/>
 
     </div>
 
@@ -122,6 +122,7 @@ export default {
         },
 
         async deleteRepetition(id) {
+            console.log(id)
             const data = {
                 status: 'D'
             }
@@ -141,6 +142,28 @@ export default {
             );
 
             this.tabLessonBooked();
+        },
+
+        async doneRepetition(id) {
+            const data = {
+                status: 'E'
+            }
+
+            console.log(data)
+
+            const res = await fetch(
+                `http://localhost:8080/backend-unito-extraprof/repetitions?id=${id}`,
+                {
+                    method: "POST",
+                    mode: "no-cors", // 'cors' by default,
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                }
+            );
+
+            this.tabLessonDone();
         },
 
         async logoutApi() {
