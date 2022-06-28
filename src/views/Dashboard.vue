@@ -1,70 +1,64 @@
 <template>
-    <div class="flex items-center">
-        <div class="ml-5 md:block hidden">
-            <p class="font-light">{{ nameUser + " " + surname }}</p>
-            <p class="font-light text-sm text-slate-400">{{role}}</p>
-            <button class="font-light text-sm text-slate-400" @click="logoutApi()">Logout</button>
+    <section>
+       <UserDetail />
+
+        <p class="font-normal text-2xl mt-5 ml-10">Dashboard Lezioni</p>
+        <p class="font-normal text-2xl mt-5 ml-10">Clicca le singole sezioni per avere più dettagli</p>
+
+        <div class="flex flex-col md:flex-row ml-3 lg:ml-10 mt-8">
+            <div @click="tabLessonBooked()"
+                class="flex justify-between items-center bg-[#bee3db] w-[94vw] md:w-[220px] lg:w-[200px] xl:w-[250px] px-6 py-8 rounded-2xl">
+                <button>
+                    <p class="font-normal text-xl">Prenotate</p>
+                </button>
+                <i class="fa-solid fa-calendar-plus fa-2xl"></i>
+            </div>
+            <div @click="tabLessonDone()"
+                class="flex justify-between items-center bg-[#bee3db] w-[94vw] md:w-[220px] lg:w-[230px] xl:w-[250px] px-6 py-8 rounded-2xl md:ml-7 md:mt-0 mt-4">
+                <button>
+                    <p class="font-normal text-xl">Effettuate</p>
+
+                </button>
+                <i class="fa-solid fa-calendar-check fa-2xl"></i>
+            </div>
+            <div @click="tabDeleted()"
+                class="flex justify-between items-center bg-[#bee3db] w-[94vw] md:w-[220px] lg:w-[200px] xl:w-[250px] px-6 py-8 rounded-2xl md:ml-7 md:mt-0 mt-4">
+                <button>
+                    <p class="font-normal text-xl">Disdette</p>
+
+                </button>
+                <i class="fa-solid fa-calendar-xmark fa-2xl"></i>
+            </div>
         </div>
-    </div>
 
-    <p class="font-normal text-2xl mt-5 ml-10">Dashboard Lezioni</p>
-    <p class="font-normal text-2xl mt-5 ml-10">Clicca le singole sezioni per avere più dettagli</p>
 
-    <div class="flex flex-col md:flex-row ml-3 lg:ml-10 mt-8">
-        <div @click="tabLessonBooked()"
-            class="flex justify-between items-center bg-[#bee3db] w-[94vw] md:w-[220px] lg:w-[200px] xl:w-[250px] px-6 py-8 rounded-2xl">
-            <button>
-                <p class="font-normal text-xl">Prenotate</p>
-            </button>
-            <i class="fa-solid fa-calendar-plus fa-2xl"></i>
+        <div v-if="tab == 1">
+
+            <p class="font-normal text-xl  px-12 py-5 pt-8">Lista Lezioni Prenotate</p>
+            <TableDashboard :repetitions="repetitionsBooked" @delete-repetition="deleteRepetition"
+                @done-repetition="doneRepetition" />
         </div>
-        <div @click="tabLessonDone()"
-            class="flex justify-between items-center bg-[#bee3db] w-[94vw] md:w-[220px] lg:w-[230px] xl:w-[250px] px-6 py-8 rounded-2xl md:ml-7 md:mt-0 mt-4">
-            <button>
-                <p class="font-normal text-xl">Effettuate</p>
-               
-            </button>
-            <i class="fa-solid fa-calendar-check fa-2xl"></i>
+
+        <div v-if="tab == 2">
+
+            <p class="font-normal text-xl  px-12 py-5 pt-8">Lista Lezioni Effettuate</p>
+            <TableDashboard :repetitions="repetitionsDone" />
+
         </div>
-        <div @click="tabDeleted()"
-            class="flex justify-between items-center bg-[#bee3db] w-[94vw] md:w-[220px] lg:w-[200px] xl:w-[250px] px-6 py-8 rounded-2xl md:ml-7 md:mt-0 mt-4">
-            <button>
-                <p class="font-normal text-xl">Disdette</p>
-              
-            </button>
-            <i class="fa-solid fa-calendar-xmark fa-2xl"></i>
+
+        <div v-if="tab == 3">
+
+            <p class="font-normal text-xl  px-12 py-5 pt-8">Lista Lezioni Disdette</p>
+            <TableDashboard :repetitions="repetitionsDeleted" />
+
         </div>
-    </div>
 
-    <div v-if="true">
-
-    </div>
-    <div v-if="tab == 1">
-
-        <p class="font-normal text-xl  px-12 py-5 pt-8">Lista Lezioni Prenotate</p>
-        <TableDashboard :repetitions="repetitionsBooked" @delete-repetition="deleteRepetition" @done-repetition="doneRepetition"/>
-
-    </div>
-
-    <div v-if="tab == 2">
-
-        <p class="font-normal text-xl  px-12 py-5 pt-8">Lista Lezioni Effettuate</p>
-        <TableDashboard :repetitions="repetitionsDone" />
-
-    </div>
-
-    <div v-if="tab == 3">
-
-        <p class="font-normal text-xl  px-12 py-5 pt-8">Lista Lezioni Disdette</p>
-        <TableDashboard :repetitions="repetitionsDeleted" />
-
-    </div>
-
-
+    </section>
 </template>
 
 <script>
 import TableDashboard from "../components/TableDashboard.vue";
+import UserDetail from "../components/UserDetail.vue";
 export default {
     data() {
         return {
@@ -73,9 +67,6 @@ export default {
             repetitionsBooked: [],
             repetitionsDone: [],
             repetitionsDeleted: [],
-            nameUser: sessionStorage.getItem('name'),
-            surname: sessionStorage.getItem('surname'),
-            role: sessionStorage.getItem('role') == 'C' ? 'Cliente' : 'Admin'
         };
     },
     computed: {
@@ -166,19 +157,8 @@ export default {
             this.tabLessonDone();
         },
 
-        async logoutApi() {
-            const res = await fetch(`http://localhost:8080/backend-unito-extraprof/logout`, { credentials: "same-origin" });
-            const data = await res.json();
-            this.$router.push("/");
-            sessionStorage.removeItem("name");
-            sessionStorage.removeItem("surname");
-            sessionStorage.removeItem("role");
-            localStorage.removeItem("isLogged");
-            localStorage.removeItem("name");
-            JSON.parse(localStorage.isLogged = false);
-            return data;
-        }
+        
     },
-    components: { TableDashboard }
+    components: { TableDashboard, UserDetail }
 }
 </script>

@@ -74,6 +74,7 @@ export default {
             sessionStorage.surname = this.resultLogin.surname;
             sessionStorage.role = this.resultLogin.role;
             sessionStorage.username = this.resultLogin.username;
+            sessionStorage.token = this.resultLogin.token;
 
            JSON.parse(localStorage.isLogged = true);
 

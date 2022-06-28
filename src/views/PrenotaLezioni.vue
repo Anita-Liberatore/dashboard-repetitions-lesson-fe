@@ -1,84 +1,145 @@
 <template>
-<div class="pb-16">
-    <p class="font-normal text-2xl mt-5 ml-10">Posts</p>
+    <UserDetail />
+    <p class="font-normal text-2xl mt-5 ml-10">Scegli un corso</p>
 
-    <p class="py-3 px-6 bg-[#f38f70] w-max text-white rounded-xl ml-3 md:ml-10 mt-10 cursor-pointer">Create New Post</p>
+    <div class="p-8">
+        <div class="grid grid-cols-6 gap-5">
+            <button :key="x.id" v-for="x in courses" @click="selectCourse(x.id)"
+                class="text-black p-4 rounded bg-white-500 shadow-md"
+                :class="[isActiveCourse == x.id ? 'text-white p-4 rounded bg-[#bee3db] shadow-md' : '']">{{ x.courseName
+                }} </button>
 
-    
-    <div class="mx-3 md:mx-0 md:ml-10 mt-10">
-    <table class="border border-[#f38f70]">
-        <thead class="bg-[#f38f70]">
-            <tr>
-                <th class="px-2 md:px-5 py-3 text-white font-medium border-r">No</th>
-                <th class="px-5 py-3 text-white font-medium md:w-[180px] lg:w-[200px] xl:w-[300px] border-r">Title</th>
-                <th class="px-5 py-3 text-white font-medium border-r md:w-[200px] xl:w-[270px]">Tags</th>
-                <th class="px-5 py-3 text-white font-medium">Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="border-b border-[#f38f70]">
-                <td class="py-4 text-center border-r">1</td>
-                <td class="pl-3 border-r">Top Waifu Lonet</td>
-                <td class="pl-3 flex flex-wrap pb-2 border-r items-center">
-                    <p class="py-2 px-4 bg-[#f38f70] rounded-full text-white w-max mt-2 mr-2 text-xs">anime</p>
-                    <p class="py-2 px-4 bg-[#f38f70] rounded-full text-white w-max mt-2 mr-2 text-xs">Waifu</p>
-                    <p class="py-2 px-4 bg-[#f38f70] rounded-full text-white w-max mt-2 mr-2 text-xs">Wibu</p>
-                    <p class="py-2 px-4 bg-[#f38f70] rounded-full text-white w-max mt-2 mr-2 text-xs">BDSM</p>
-                    <p class="py-2 px-4 bg-[#f38f70] rounded-full text-white w-max mt-2 mr-2 text-xs">Stres</p>
-                </td>
-                <td class="px-3 text-center">
-                    <p class="py-2 px-3 md:px-7 text-xs md:text-base font-medium rounded-full bg-blue-400 md:inline md:mr-3"><a href="">Edit</a></p>
-                    <p class="py-2 px-3 md:px-7 text-xs md:text-base font-medium rounded-full bg-red-400 md:inline text-white md:mt-0 mt-2"><a href="">Delete</a></p>
-                </td>
-            </tr>
-            <tr class="border-b border-[#f38f70]">
-                <td class="py-4 text-center border-r">2</td>
-                <td class="pl-3 border-r">Mengenal MEVN</td>
-                <td class="pl-3 flex flex-wrap pb-2 border-r items-center">
-                    <p class="py-2 px-4 bg-[#f38f70] rounded-full text-white w-max mt-2 mr-2 text-xs">MongoDB</p>
-                    <p class="py-2 px-4 bg-[#f38f70] rounded-full text-white w-max mt-2 mr-2 text-xs">Express Js</p>
-                    <p class="py-2 px-4 bg-[#f38f70] rounded-full text-white w-max mt-2 mr-2 text-xs">Vue Js</p>
-                    <p class="py-2 px-4 bg-[#f38f70] rounded-full text-white w-max mt-2 mr-2 text-xs">Node Js</p>
-                </td>
-                <td class="px-3 text-center">
-                    <p class="py-2 px-3 md:px-7 text-xs md:text-base font-medium rounded-full bg-blue-400 md:inline md:mr-3"><a href="">Edit</a></p>
-                    <p class="py-2 px-3 md:px-7 text-xs md:text-base font-medium rounded-full bg-red-400 md:inline text-white md:mt-0 mt-2"><a href="">Delete</a></p>
-                </td>
-            </tr>
-            <tr class="border-b border-[#f38f70]">
-                <td class="py-4 text-center border-r">3</td>
-                <td class="pl-3 border-r">Cara Menjadi Raja Psatir No Root</td>
-                <td class="pl-3 flex flex-wrap pb-2 border-r items-center">
-                    <p class="py-2 px-4 bg-[#f38f70] rounded-full text-white w-max mt-2 mr-2 text-xs">meme</p>
-                    <p class="py-2 px-4 bg-[#f38f70] rounded-full text-white w-max mt-2 mr-2 text-xs">Satir</p>
-                </td>
-                <td class="px-3 text-center">
-                    <p class="py-2 px-3 md:px-7 text-xs md:text-base font-medium rounded-full bg-blue-400 md:inline md:mr-3"><a href="">Edit</a></p>
-                    <p class="py-2 px-3 md:px-7 text-xs md:text-base font-medium rounded-full bg-red-400 md:inline text-white md:mt-0 mt-2"><a href="">Delete</a></p>
-                </td>
-            </tr>
-            <tr class="border-b border-[#f38f70]">
-                <td class="py-4 text-center border-r">4</td>
-                <td class="pl-3 border-r">Belajar SEO Website</td>
-                <td class="pl-3 flex flex-wrap pb-2 border-r items-center">
-                    <p class="py-2 px-4 bg-[#f38f70] rounded-full text-white w-max mt-2 mr-2 text-xs">SEO</p>
-                    <p class="py-2 px-4 bg-[#f38f70] rounded-full text-white w-max mt-2 mr-2 text-xs">tips web</p>
-                </td>
-                <td class="px-3 text-center">
-                    <p class="py-2 px-3 md:px-7 text-xs md:text-base font-medium rounded-full bg-blue-400 md:inline md:mr-3"><a href="">Edit</a></p>
-                    <p class="py-2 px-3 md:px-7 text-xs md:text-base font-medium rounded-full bg-red-400 md:inline text-white md:mt-0 mt-2"><a href="">Delete</a></p>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+        </div>
     </div>
-    <!-- end table posts -->
 
-</div>
+    <p class="font-normal text-2xl mt-5 ml-10">Scegli un giorno e prenota le tue lezioni</p>
+    <div class="p-8">
+
+        <ul class="grid grid-flow-col text-center text-gray-500 bg-gray-100 rounded-full p-1">
+            <li>
+                <button @click="monday()" class=" tab flex justify-center py-4"
+                    :class="[tab == 1 ? 'bg-white rounded-full shadow text-indigo-900' : '']">Lunedì</button>
+            </li>
+            <li>
+                <button @click="tuesday()" class=" tab flex justify-center py-4"
+                    :class="[tab == 2 ? 'bg-white rounded-full shadow text-indigo-900' : '']">Martedì</button>
+            </li>
+            <li>
+                <button @click="wednesday()" class=" tab flex justify-center py-4"
+                    :class="[tab == 3 ? 'bg-white rounded-full shadow text-indigo-900' : '']">Mercoledì</button>
+            </li>
+            <li>
+                <button @click="tabThursday()" class=" tab flex justify-center py-4"
+                    :class="[tab == 4 ? 'bg-white rounded-full shadow text-indigo-900' : '']">Giovedì</button>
+            </li>
+            <li>
+                <button @click="friday()" class=" tab flex justify-center py-4"
+                    :class="[tab == 5 ? 'bg-white rounded-full shadow text-indigo-900' : '']">Venerdì</button>
+            </li>
+        </ul>
+    </div>
+    <section v-if="tab == 1">
+        <CardBookingLesson dayLesson='L' :lessons="mondayLessons" @booking-lesson="bookingLesson"/>
+    </section>
+
+    <section v-if="tab == 2">
+        <CardBookingLesson />
+    </section>
+
+    <section v-if="tab == 3">
+        <CardBookingLesson />
+    </section>
+
+    <section v-if="tab == 4">
+        <CardBookingLesson />
+    </section>
+
+    <section v-if="tab == 5">
+        <CardBookingLesson />
+    </section>
 </template>
 
 <script>
+import UserDetail from '../components/UserDetail.vue';
+import CardBookingLesson from '../components/CardBookingLesson.vue';
 export default {
+    data() {
+        return {
+            tab: 0,
+            courses: [],
+            isActiveCourse: 0,
+            mondayLessons: []
+        };
+    },
+    methods: {
+        async monday() {
+            this.tab = 1;
+            this.mondayLessons = await this.fetchCoursesForBooking(this.isActiveCourse, "L");
+            
+        },
 
+        bookingLesson(id, hour, dayLesson, username) {
+            console.log(id)
+            console.log(hour)
+            console.log(dayLesson)
+            console.log(username)
+            console.log(this.isActiveCourse)
+
+        },
+
+        tuesday() {
+            this.tab = 2;
+        },
+
+        wednesday() {
+            this.tab = 3;
+        },
+
+        tabThursday() {
+            this.tab = 4;
+        },
+
+        friday() {
+            this.tab = 5;
+        },
+
+        selectCourse(id) {
+            this.isActiveCourse = id;
+            this.tab = 0;
+        },
+
+        async fetchCourses() {
+            const res = await fetch(
+                "http://localhost:8080/backend-unito-extraprof/courses"
+            );
+            const data = await res.json();
+            return data;
+        },
+
+
+        async fetchCoursesForBooking(courseId, day) {
+            const res = await fetch(
+                `http://localhost:8080/backend-unito-extraprof/professors-course-mobile?id=${courseId}&day=${day}`
+            );
+
+            const data = await res.json();
+            return data;
+        },
+    },
+
+    async created() {
+        this.courses = await this.fetchCourses();
+    },
+    components: { UserDetail, CardBookingLesson }
 }
 </script>
+
+<style>
+.button {
+    background-color: #0a9396;
+}
+
+.tab {
+    padding: 10%;
+}
+</style>
