@@ -4,7 +4,7 @@
 
     <div class="p-8">
         <div class="grid grid-cols-6 gap-5">
-            <button :key="x.id" v-for="x in courses" @click="selectCourse(x.id)"
+            <button :key="x.id" v-for="x in courses" @click="selectCourse(x.id, x.courseName)"
                 class="text-black p-4 rounded bg-white-500 shadow-md"
                 :class="[isActiveCourse == x.id ? 'text-white p-4 rounded bg-[#bee3db] shadow-md' : '']">{{ x.courseName
                 }} </button>
@@ -39,23 +39,23 @@
         </ul>
     </div>
     <section v-if="tab == 1">
-        <CardBookingLesson dayLesson='L' :lessons="mondayLessons" @booking-lesson="bookingLesson"/>
+        <CardBookingLesson dayLesson='L' :lessons="mondayLessons" @booking-lesson="bookingLesson" />
     </section>
 
     <section v-if="tab == 2">
-        <CardBookingLesson />
+        <CardBookingLesson dayLesson='M' :lessons="tuesdayLessons" @booking-lesson="bookingLesson" />
     </section>
 
     <section v-if="tab == 3">
-        <CardBookingLesson />
+        <CardBookingLesson dayLesson='ME' :lessons="wednesdayLessons" @booking-lesson="bookingLesson" />
     </section>
 
     <section v-if="tab == 4">
-        <CardBookingLesson />
+        <CardBookingLesson dayLesson='G' :lessons="thursdayLessons" @booking-lesson="bookingLesson" />
     </section>
 
     <section v-if="tab == 5">
-        <CardBookingLesson />
+        <CardBookingLesson dayLesson='V' :lessons="fridayLessons" @booking-lesson="bookingLesson" />
     </section>
 </template>
 
@@ -68,44 +68,87 @@ export default {
             tab: 0,
             courses: [],
             isActiveCourse: 0,
-            mondayLessons: []
+            mondayLessons: [],
+            tuesdayLessons: [],
+            wednesdayLessons: [],
+            thursdayLessons: [],
+            fridayLessons: []
         };
     },
     methods: {
         async monday() {
             this.tab = 1;
             this.mondayLessons = await this.fetchCoursesForBooking(this.isActiveCourse, "L");
-            
-        },
-
-        bookingLesson(id, hour, dayLesson, username) {
-            console.log(id)
-            console.log(hour)
-            console.log(dayLesson)
-            console.log(username)
-            console.log(this.isActiveCourse)
 
         },
 
-        tuesday() {
+        async bookingLesson(id, hour, dayLesson, username) {
+
+            const data = {
+                idProfessor: id,
+                idCourse: this.isActiveCourse,
+                day: dayLesson,
+                hour: hour,
+                status: 'P',
+                user: username
+            }
+
+            console.log(data)
+
+            const res = await fetch(
+                "http://localhost:8080/backend-unito-extraprof/add-repetitions",
+                {
+                    method: "POST",
+                    mode: "no-cors", // 'cors' by default,
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify(data),
+                }
+            );
+
+            if(this.tab==1) {
+                this.mondayLessons = await this.fetchCoursesForBooking(this.isActiveCourse, "L");
+            } else if(this.tab==2) {
+                this.tuesdayLessons = await this.fetchCoursesForBooking(this.isActiveCourse, "M");
+            } else if(this.tab==3) {
+                this.wednesdayLessons = await this.fetchCoursesForBooking(this.isActiveCourse, "ME");
+            } else if(this.tab==4) {
+                this.thursdayLessons = await this.fetchCoursesForBooking(this.isActiveCourse, "G");
+            } else if(this.tab==5) {
+                this.fridayLessons = await this.fetchCoursesForBooking(this.isActiveCourse, "V");
+            }
+
+
+        },
+
+        async tuesday() {
             this.tab = 2;
+            this.tuesdayLessons = await this.fetchCoursesForBooking(this.isActiveCourse, "M");
+
         },
 
-        wednesday() {
+        async wednesday() {
             this.tab = 3;
+            this.wednesdayLessons = await this.fetchCoursesForBooking(this.isActiveCourse, "ME");
         },
 
-        tabThursday() {
+        async tabThursday() {
             this.tab = 4;
+            this.thursdayLessons = await this.fetchCoursesForBooking(this.isActiveCourse, "G");
         },
 
-        friday() {
+        async friday() {
             this.tab = 5;
+            this.fridayLessons = await this.fetchCoursesForBooking(this.isActiveCourse, "V");
+
         },
 
-        selectCourse(id) {
+        selectCourse(id, courseName) {
             this.isActiveCourse = id;
             this.tab = 0;
+            localStorage.courseName = courseName
         },
 
         async fetchCourses() {
@@ -129,6 +172,7 @@ export default {
 
     async created() {
         this.courses = await this.fetchCourses();
+
     },
     components: { UserDetail, CardBookingLesson }
 }

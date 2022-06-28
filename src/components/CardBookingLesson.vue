@@ -30,6 +30,11 @@
                         
                     </div>
 
+                    <div class="m-6">
+                        <h1 class="text-xl font-medium text-gray-700">Lezione</h1>
+                        <p class="text-gray-600">{{ courseName }}</p>
+                    </div>
+
 
                 </div>
                 <button class="bg-blue-500 button hover:opacity-75 text-white rounded-full px-8 py-2"
@@ -47,7 +52,8 @@
 export default {
     data() {
         return {
-            username: sessionStorage.getItem('username')
+            username: sessionStorage.getItem('username'),
+            courseName: localStorage.getItem('courseName')
         };
     },
     props: {

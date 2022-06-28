@@ -3,6 +3,8 @@ import Home from '../views/Home.vue'
 import Posts from '../views/PrenotaLezioni.vue'
 import Dashboard from '../views/Dashboard.vue'
 import Login from '../views/Login.vue'
+import Admin from '../views/Admin.vue'
+
 
 function guardMyroute(to, from, next) {
     var isAuthenticated = false;
@@ -19,6 +21,8 @@ function guardMyroute(to, from, next) {
         next('/login'); // go to '/login';
     }
 }
+
+
 
 
 const routes = [
