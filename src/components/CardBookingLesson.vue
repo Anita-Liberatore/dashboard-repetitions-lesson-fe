@@ -8,27 +8,32 @@
                 <div class="flex">
 
                     <div class="m-6">
-                        <h1 class="text-xl font-medium text-gray-700">Nome docente: {{ x.nameProfessor }}</h1>
+                        <h1 class="text-xl font-medium text-gray-700">Nome docente</h1>
+                        <p class="text-gray-600">{{ x.nameProfessor }}</p>
                     </div>
 
 
                     <div class="m-6">
-                        <h1 class="text-xl font-medium text-gray-700">Orario: {{ x.hour }}</h1>
+                        <h1 class="text-xl font-medium text-gray-700">Orario</h1>
+                        <p class="text-gray-600">{{ x.hour }}</p>
                     </div>
 
                     <div class="m-6">
-                        <h1 class="text-xl font-medium text-gray-700">Giorno: {{ dayLesson == 'L' ? 'Lunedi' : dayLesson
+                        <h1 class="text-xl font-medium text-gray-700">Giorno</h1>
+                        <p class="text-gray-600">{{ dayLesson == 'L' ? 'Lunedi' : dayLesson
                                 == 'M'
                                 ?
                                 'Martedi' : dayLesson == 'ME' ? 'Mercoledi' : dayLesson == 'G' ? 'Giovedi' : dayLesson ==
                                     'V' ? 'Venerdi' :
                                     ''
-                        }}</h1>
+                        }}</p>
+                        
                     </div>
 
 
                 </div>
-                <button class="bg-blue-500 button hover:opacity-75 text-white rounded-full px-8 py-2" @click="$emit('booking-lesson', x.id, x.hour, dayLesson, username)">
+                <button class="bg-blue-500 button hover:opacity-75 text-white rounded-full px-8 py-2"
+                    @click="$emit('booking-lesson', x.id, x.hour, dayLesson, username)">
                     Prenota
                 </button>
             </div>
