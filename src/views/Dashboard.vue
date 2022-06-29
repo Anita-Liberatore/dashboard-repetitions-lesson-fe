@@ -1,6 +1,6 @@
 <template>
     <section>
-       <UserDetail />
+        <UserDetail />
 
         <p class="font-normal text-2xl mt-5 ml-10">Dashboard Lezioni</p>
         <p class="font-normal text-2xl mt-5 ml-10">Clicca le singole sezioni per avere più dettagli</p>
@@ -131,8 +131,8 @@ export default {
                     body: JSON.stringify(data),
                 }
             );
-
-            this.tabLessonBooked();
+            this.repetitions = await this.fetchRepetitions();
+            this.repetitionsBooked = this.repetitions.filter(l => l.status == 'P')
         },
 
         async doneRepetition(id) {
@@ -153,11 +153,12 @@ export default {
                     body: JSON.stringify(data),
                 }
             );
+            this.repetitions = await this.fetchRepetitions();
+            this.repetitionsBooked = this.repetitions.filter(l => l.status == 'P')
 
-            this.tabLessonDone();
         },
 
-        
+
     },
     components: { TableDashboard, UserDetail }
 }

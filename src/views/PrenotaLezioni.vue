@@ -108,6 +108,8 @@ export default {
                 }
             );
 
+             alert("Hai prenotato correttamente una lezione!")
+
             if(this.tab==1) {
                 this.mondayLessons = await this.fetchCoursesForBooking(this.isActiveCourse, "L");
             } else if(this.tab==2) {
@@ -119,6 +121,8 @@ export default {
             } else if(this.tab==5) {
                 this.fridayLessons = await this.fetchCoursesForBooking(this.isActiveCourse, "V");
             }
+
+           
 
 
         },

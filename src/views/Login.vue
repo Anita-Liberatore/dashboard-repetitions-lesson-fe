@@ -13,6 +13,7 @@
                                 il login!</p>
                         </div>
                         <br>
+                        <p class="text-lg mb-4 mr-4">Inserisci username e password!</p>
 
                         <!-- Email input -->
                         <div class="mb-6">
