@@ -103,11 +103,27 @@ export default {
             this.courses = await this.fetchCourses();
         },
 
-        addCourse(courseName) {
-            console.log(courseName)
-        }
+        async addCourse(courseName) {
 
+            const data = {
+                courseName: courseName
+            }
 
+            const res = await fetch(
+                "http://localhost:8080/backend-unito-extraprof/courses",
+                {
+                    method: "POST",
+                    mode: "no-cors", // 'cors' by default,
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                }
+            );            
+            this.courses = await this.fetchCourses();
+
+            alert("Hai inserito un corso!")
+        },
     },
     components: { UserDetail, TableCourse }
 }
