@@ -24,7 +24,7 @@
                 </button>
                 <i class="fa-solid fa-people-group fa-2xl"></i>
             </div>
-            <div @click=""
+            <div @click="tabAssociations()"
                 class="flex justify-between items-center bg-[#bee3db] w-[94vw] md:w-[220px] lg:w-[200px] xl:w-[250px] px-6 py-8 rounded-2xl md:ml-7 md:mt-0 mt-4">
                 <button>
                     <p class="font-normal text-xl">Associa docente-corso</p>
@@ -51,9 +51,15 @@
             <TableCourse :courses="courses" @delete-course="deleteCourse" @add-course="addCourse" />
         </div>
 
-         <div v-if="tab == 2">
+        <div v-if="tab == 2">
             <p class="font-normal text-xl  px-12 py-5 pt-8">Lista Docenti</p>
-            <TableProfessor :professors="professors" />
+            <TableProfessor :professors="professors" @delete-professor="deleteProfessor"
+                @add-professor="addProfessor" />
+        </div>
+
+         <div v-if="tab == 3">
+            <p class="font-normal text-xl  px-12 py-5 pt-8">Lista Docenti</p>
+            <TableAssociation :associations="associations" @delete-association="deleteAssociation"/>
         </div>
     </section>
 </template>
@@ -62,12 +68,14 @@
 import UserDetail from "../components/UserDetail.vue";
 import TableCourse from "../components/TableCourse.vue";
 import TableProfessor from "../components/TableProfessor.vue";
+import TableAssociation from "../components/TableAssociation.vue";
 export default {
     data() {
         return {
             tab: 0,
             courses: [],
-            professors: []
+            professors: [],
+            associations: []
         };
     },
     computed: {
@@ -98,6 +106,55 @@ export default {
             return data;
         },
 
+         async fetchAssociations() {
+            const res = await fetch(
+                `http://localhost:8080/backend-unito-extraprof/associazioni`
+            );
+            const data = await res.json();
+            return data;
+        },
+
+        async deleteProfessor(id) {
+            const res = await fetch(
+                `http://localhost:8080/backend-unito-extraprof/delete-professor?id=${id}`,
+                {
+                    mode: "no-cors", // 'cors' by default,
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                }
+            );
+            this.professors = await this.fetchProfessors();
+        },
+
+        async deleteAssociation(id) {
+            const res = await fetch(
+                `http://localhost:8080/backend-unito-extraprof/delete-associazione?id=${id}`,
+                {
+                    mode: "no-cors", // 'cors' by default,
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                }
+            );
+            this.associations = await this.fetchAssociations();
+        },
+
+        async addProfessor(obj) {
+
+            const res = await fetch(
+                "http://localhost:8080/backend-unito-extraprof/professors",
+                {
+                    method: "POST",
+                    mode: "no-cors", // 'cors' by default,
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                    body: JSON.stringify(obj),
+                }
+            );
+            this.professors = await this.fetchProfessors();
+        },
 
         async tabCourses() {
             this.tab = 1;
@@ -105,10 +162,15 @@ export default {
 
         },
 
-         async tabProfessors() {
+        async tabProfessors() {
             this.tab = 2;
             this.professors = await this.fetchProfessors();
 
+        },
+
+        async tabAssociations() {
+           this.tab = 3;
+           this.associations = await this.fetchAssociations();
         },
 
         async deleteCourse(id) {
@@ -140,12 +202,12 @@ export default {
                     },
                     body: JSON.stringify(data),
                 }
-            );            
+            );
             this.courses = await this.fetchCourses();
 
             alert("Hai inserito un corso!")
         },
     },
-    components: { UserDetail, TableCourse, TableProfessor }
+    components: { UserDetail, TableCourse, TableProfessor, TableAssociation }
 }
 </script>
