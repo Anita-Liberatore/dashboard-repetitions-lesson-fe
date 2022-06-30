@@ -5,14 +5,17 @@
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                            Nome corso
+                            Nome docente
+                        </th>
+                         <th scope="col" class="px-6 py-3">
+                            Cognome docente
                         </th>
                         <th scope="col" class="px-6 py-3">
 
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            <button @click="flagIconToShowCardAddCourse"><i v-if="!flagOpenCardToAddCourse"
-                                    class="fa-solid fa-plus fa-2xl"></i><i v-if="flagOpenCardToAddCourse"
+                            <button @click="flagIconToShowCardAddProfessor"><i v-if="!flagOpenCardToAddProfessor"
+                                    class="fa-solid fa-plus fa-2xl"></i><i v-if="flagOpenCardToAddProfessor"
                                     class="fa-solid fa-circle-minus fa-2xl"></i></button>
                         </th>
                     </tr>
@@ -20,30 +23,40 @@
                 <tbody>
 
                     <tr class="odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700" :key="x.id"
-                        v-for="x in courses">
+                        v-for="x in professors">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                            {{ x.courseName }}
+                            {{ x.name }}
+                        </th>
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                            {{ x.surname }}
                         </th>
                         <td class="px-6 py-4 text-right">
                             <button type="button"
                                 class="my-red text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-                                @click="$emit('delete-course', x.id)">Elimina</button>
+                                @click="$emit('delete-professor', x.id)">Elimina</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <section v-if="flagOpenCardToAddCourse" class="add-course">
+        <section v-if="flagOpenCardToAddProfessor" class="add-course">
             <form @submit="onSubmit">
                 <div class="grid gap-6 mb-6 lg:grid-cols-2">
                     <div>
                         <label
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Aggiungi
-                            corso</label>
-                        <input type="text" id="course" v-model="courseName"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Nome docente</label>
+                        <input type="text" v-model="professorName"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Nome corso" required>
+                            placeholder="Nome docente" required>
+                    </div>
+
+                    <div>
+                        <label for="first_name"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Cognome docente</label>
+                        <input type="text" v-model="professorSurname"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Cognome docente" required>
                     </div>
                 </div>
                 <button type="submit"
@@ -62,24 +75,24 @@ export default {
 
     data() {
         return {
-            flagOpenCardToAddCourse: false,
-            courseName: null
+            flagOpenCardToAddProfessor: false,
+            professorName: null
         }
     },
-    emits: ["delete-course", "add-course"],
+    emits: ["delete-professor", "add-professor"],
 
     props: {
-        courses: Object,
+        professors: Object,
     },
     methods: {
-        flagIconToShowCardAddCourse() {
-            this.flagOpenCardToAddCourse = !this.flagOpenCardToAddCourse
+        flagIconToShowCardAddProfessor() {
+            this.flagOpenCardToAddProfessor = !this.flagOpenCardToAddProfessor
         },
 
         onSubmit(e) {
             e.preventDefault();
 
-            this.$emit("add-course", this.courseName);
+            this.$emit("add-professor", this.professorName);
         }
     }
 }

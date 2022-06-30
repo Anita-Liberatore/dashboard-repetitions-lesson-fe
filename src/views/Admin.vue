@@ -16,7 +16,7 @@
                 </button>
                 <i class="fa-solid fa-book fa-2xl"></i>
             </div>
-            <div @click=""
+            <div @click="tabProfessors()"
                 class="flex justify-between items-center bg-[#bee3db] w-[94vw] md:w-[220px] lg:w-[230px] xl:w-[250px] px-6 py-8 rounded-2xl md:ml-7 md:mt-0 mt-4">
                 <button>
                     <p class="font-normal text-xl">Docenti</p>
@@ -50,17 +50,24 @@
             <p class="font-normal text-xl  px-12 py-5 pt-8">Lista Corsi</p>
             <TableCourse :courses="courses" @delete-course="deleteCourse" @add-course="addCourse" />
         </div>
+
+         <div v-if="tab == 2">
+            <p class="font-normal text-xl  px-12 py-5 pt-8">Lista Docenti</p>
+            <TableProfessor :professors="professors" />
+        </div>
     </section>
 </template>
 
 <script>
 import UserDetail from "../components/UserDetail.vue";
 import TableCourse from "../components/TableCourse.vue";
+import TableProfessor from "../components/TableProfessor.vue";
 export default {
     data() {
         return {
             tab: 0,
             courses: [],
+            professors: []
         };
     },
     computed: {
@@ -83,10 +90,24 @@ export default {
             return data;
         },
 
+        async fetchProfessors() {
+            const res = await fetch(
+                `http://localhost:8080/backend-unito-extraprof/professors`
+            );
+            const data = await res.json();
+            return data;
+        },
+
 
         async tabCourses() {
             this.tab = 1;
             this.courses = await this.fetchCourses();
+
+        },
+
+         async tabProfessors() {
+            this.tab = 2;
+            this.professors = await this.fetchProfessors();
 
         },
 
@@ -125,6 +146,6 @@ export default {
             alert("Hai inserito un corso!")
         },
     },
-    components: { UserDetail, TableCourse }
+    components: { UserDetail, TableCourse, TableProfessor }
 }
 </script>
