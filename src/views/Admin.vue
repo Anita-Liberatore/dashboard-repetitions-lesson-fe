@@ -48,7 +48,7 @@
 
         <div v-if="tab == 1">
             <p class="font-normal text-xl  px-12 py-5 pt-8">Lista Corsi</p>
-            <TableCourse :courses="courses" />
+            <TableCourse :courses="courses" @delete-course="deleteCourse" @add-course="addCourse" />
         </div>
     </section>
 </template>
@@ -90,10 +90,22 @@ export default {
 
         },
 
+        async deleteCourse(id) {
+            const res = await fetch(
+                `http://localhost:8080/backend-unito-extraprof/delete-course?id=${id}`,
+                {
+                    mode: "no-cors", // 'cors' by default,
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                }
+            );
+            this.courses = await this.fetchCourses();
+        },
 
-
-
-
+        addCourse(courseName) {
+            console.log(courseName)
+        }
 
 
     },
