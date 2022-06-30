@@ -117,7 +117,7 @@ export default {
 
         async fetchCourses() {
             const res = await fetch(
-                "http://localhost:8080/backend-unito-extraprof/courses"
+                "http://localhost:8080/backend-unito-extraprof/courses", { credentials: 'same-origin' }
             );
             const data = await res.json();
             return data;
@@ -126,7 +126,7 @@ export default {
 
         async fetchCoursesForBooking(courseId, day) {
             const res = await fetch(
-                `http://localhost:8080/backend-unito-extraprof/professors-course-mobile?id=${courseId}&day=${day}`
+                `http://localhost:8080/backend-unito-extraprof/professors-course-mobile?id=${courseId}&day=${day}`, { credentials: 'same-origin' }
             );
 
             const data = await res.json();

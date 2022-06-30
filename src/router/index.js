@@ -46,7 +46,8 @@ const routes = [
     },
     {
         path: '/admin',
-        component: Admin    
+        component: Admin,
+        beforeEnter: guardMyroute 
     }
 ]
 
