@@ -1,5 +1,14 @@
 <template>
-    <p class="font-normal text-2xl mt-5 ml-10">Benvenuto su Extra Prof. Qui puoi prenotare le tue lezioni! Dai un'occhiata al nostro catalogo!</p>
+
+    <div>
+        <div class="ml-5 md:block hidden">
+            <button class="font-light text-xl text-slate-400" @click="goToLogin()">Login</button>
+            <i class="fa-solid fa-layer-group ml-3"></i>
+
+        </div>
+    </div>
+    <p class="font-normal text-2xl mt-5 ml-10">Benvenuto su Extra Prof. Qui puoi prenotare le tue lezioni! Dai
+        un'occhiata al nostro catalogo!</p>
 
     <p class="font-normal text-2xl mt-5 ml-10">Scegli un corso</p>
 
@@ -106,7 +115,11 @@ export default {
         },
 
         bookingLesson(id, hour, dayLesson, username) {
-            this.$router.push('/login') 
+            this.$router.push('/login')
+        },
+
+        goToLogin() {
+           this.$router.push('/login')
         },
 
         selectCourse(id, courseName) {

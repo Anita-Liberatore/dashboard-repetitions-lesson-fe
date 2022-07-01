@@ -35,6 +35,9 @@
                                 class="my-red text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
                                 @click="$emit('delete-association', x.id)">Elimina</button>
                         </td>
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+
+                        </th>
                     </tr>
                 </tbody>
             </table>
@@ -43,22 +46,20 @@
         <section v-if="flagOpenCardToAddAssociation" class="add-associations">
             <form @submit="onSubmit">
                 <div class="grid gap-6 mb-6 lg:grid-cols-2">
-                    
-                    <select id="countries_disabled"
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Scegli un docente</label>
+                    <select id="professors_panel" v-model="professorId" @change="getProfessorIdValue($event)"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected>Seleziona un corso</option>
-                        <option :key="x.id"
-                        v-for="x in [1,2,3]" value="US">United States</option>
+                        <option  :key="x.id" v-for="x in optionsProfessor" :value="x.id">
+                            {{ x.name + " " + x.surname }}</option>
+
                     </select>
 
-                   
-                    <select id="countries_disabled"
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Scegli un corso</label>
+                    <select id="courses_panel" v-model="courseId" @change="getCourseIdValue($event)"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected>Seleziona un docente</option>
-                        <option :key="x.id"
-                        v-for="x in [1,2,3]" value="US">United States</option>
-                        
+                        <option :key="y.id" v-for="y in coursesPanel" :value="y.id" >{{y.courseName}}</option>
                     </select>
+
                 </div>
                 <button type="submit"
                     class="button-add-course text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Aggiungi</button>
@@ -77,13 +78,17 @@ export default {
     data() {
         return {
             flagOpenCardToAddAssociation: false,
-            courseName: null
+            courseName: null,
+            coursesPanel: [],
+            professorId: "",
+            courseId: ""
         }
     },
     emits: ["delete-association", "add-association"],
 
     props: {
         associations: Object,
+        optionsProfessor: Object
     },
     methods: {
         flagButton() {
@@ -93,9 +98,27 @@ export default {
         onSubmit(e) {
             e.preventDefault();
 
-            this.$emit("add-association", this.courseName);
-        }
-    }
+            this.$emit("add-association", this.professorId, this.courseId);
+        },
+
+        async getProfessorIdValue(event) {
+            this.coursesPanel = await this.fetchCoursesForAdminPanelApi(event.target.value)
+            this.professorId = event.target.value
+        },
+
+        getCourseIdValue(event) {
+            this.courseId = event.target.value
+        },
+
+        async fetchCoursesForAdminPanelApi(professorId) {
+            const res = await fetch(
+                `http://localhost:8080/backend-unito-extraprof/admin-filter-panel?professor=${professorId}`
+            );
+            const data = await res.json();
+            return data;
+        },
+    },
+
 }
 
 </script>

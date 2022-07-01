@@ -59,7 +59,8 @@
 
         <div v-if="tab == 3">
             <p class="font-normal text-xl  px-12 py-5 pt-8">Lista Associazioni corso-docente</p>
-            <TableAssociation :associations="associations" @delete-association="deleteAssociation" />
+            <TableAssociation :associations="associations" :optionsProfessor="professors" @add-association="addAssociation"
+                @delete-association="deleteAssociation" />
         </div>
 
         <div v-if="tab == 4">
@@ -92,6 +93,9 @@ export default {
 
 
     },
+    async created() {
+        this.professors = await this.fetchProfessors()
+    },
     methods: {
         bukaside() {
             this.$store.state.sidebarmobile = true;
@@ -103,6 +107,10 @@ export default {
             );
             const data = await res.json();
             return data;
+        },
+
+        async addAssociation(professorId, courseId) {
+            console.log(professorId, courseId)
         },
 
         async fetchProfessors() {
@@ -150,6 +158,8 @@ export default {
 
         },
 
+        
+
         async deleteProfessor(id) {
             const res = await fetch(
                 `http://localhost:8080/backend-unito-extraprof/delete-professor?id=${id}`,
@@ -177,6 +187,13 @@ export default {
         },
 
         async addProfessor(obj) {
+
+            this.professors.some(element => {
+                if (element.name.toLowerCase() == obj.name.toLowerCase() && element.surname.toLowerCase() == obj.surname.toLowerCase()) {
+                    alert("Non puoi inserire docenti con lo stesso nome e cognome!");
+
+                }
+            });
 
             const res = await fetch(
                 "http://localhost:8080/backend-unito-extraprof/professors",
@@ -233,6 +250,13 @@ export default {
                 courseName: courseName
             }
 
+            this.courses.some(element => {
+                if (element.courseName.toLowerCase() == data.courseName.toLowerCase()) {
+                    alert("Non puoi inserire corsi con lo stesso nome!");
+
+                }
+            });
+
             const res = await fetch(
                 "http://localhost:8080/backend-unito-extraprof/courses",
                 {
@@ -245,8 +269,6 @@ export default {
                 }
             );
             this.courses = await this.fetchCourses();
-
-            alert("Hai inserito un corso!")
         },
     },
     components: { UserDetail, TableCourse, TableProfessor, TableAssociation, TableRepetitionsAdmin }

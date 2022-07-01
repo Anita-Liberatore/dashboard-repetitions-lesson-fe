@@ -82,6 +82,8 @@ export default {
             e.preventDefault();
 
             this.$emit("add-course", this.courseName);
+
+            this.courseName = null
         }
     }
 }
