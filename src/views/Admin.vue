@@ -48,6 +48,7 @@
 
         <div v-if="tab == 1">
             <p class="font-normal text-xl  px-12 py-5 pt-8">Lista Corsi</p>
+            <p class="font-normal text-xl  px-9 py-5 pt-8">Puoi eliminare solo i corsi che non hanno delle associazioni in corso</p>
             <TableCourse :courses="courses" @delete-course="deleteCourse" @add-course="addCourse" />
         </div>
 
