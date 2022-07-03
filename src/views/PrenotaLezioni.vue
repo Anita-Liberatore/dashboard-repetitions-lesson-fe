@@ -4,7 +4,7 @@
 
     <div class="p-8">
         <div class="grid grid-cols-6 gap-5">
-            <button :key="x.id" v-for="x in courses" @click="selectCourse(x.id, x.courseName)"
+            <button :key="x.id" v-for="x in courses" @click="selectCourse(x.id, x.courseName)" v-show="x.isAssociato=='Y'"
                 class="text-black p-4 rounded bg-white-500 shadow-md"
                 :class="[isActiveCourse == x.id ? 'text-white p-4 rounded bg-[#bee3db] shadow-md' : '']">{{ x.courseName
                 }} </button>

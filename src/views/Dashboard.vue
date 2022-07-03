@@ -158,7 +158,6 @@ export default {
 
         },
 
-
     },
     components: { TableDashboard, UserDetail }
 }

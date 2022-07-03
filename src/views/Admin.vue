@@ -94,9 +94,7 @@ export default {
 
 
     },
-    async created() {
-        this.professors = await this.fetchProfessors()
-    },
+
     methods: {
         bukaside() {
             this.$store.state.sidebarmobile = true;
