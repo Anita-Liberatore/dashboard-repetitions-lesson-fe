@@ -99,6 +99,9 @@ export default {
             e.preventDefault();
 
             this.$emit("add-association", this.professorId, this.courseId);
+
+            this.professorId = null;
+            this.courseId = null;
         },
 
         async getProfessorIdValue(event) {

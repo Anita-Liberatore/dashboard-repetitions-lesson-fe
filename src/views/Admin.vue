@@ -59,8 +59,8 @@
 
         <div v-if="tab == 3">
             <p class="font-normal text-xl  px-12 py-5 pt-8">Lista Associazioni corso-docente</p>
-            <TableAssociation :associations="associations" :optionsProfessor="professors" @add-association="addAssociation"
-                @delete-association="deleteAssociation" />
+            <TableAssociation :associations="associations" :optionsProfessor="professors"
+                @add-association="addAssociation" @delete-association="deleteAssociation" />
         </div>
 
         <div v-if="tab == 4">
@@ -110,7 +110,28 @@ export default {
         },
 
         async addAssociation(professorId, courseId) {
-            console.log(professorId, courseId)
+
+            const data = {
+                idProfessor: professorId,
+                idCourse: courseId
+            }
+
+            const res = await fetch(
+                "http://localhost:8080/backend-unito-extraprof/associazioni",
+                {
+                    method: "POST",
+                    mode: "no-cors", // 'cors' by default,
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                }
+            );
+
+            this.coursesPanel = null,
+
+            this.associations = await this.fetchAssociations();
+
         },
 
         async fetchProfessors() {
@@ -158,7 +179,7 @@ export default {
 
         },
 
-        
+
 
         async deleteProfessor(id) {
             const res = await fetch(
