@@ -30,12 +30,12 @@
                         </div>
 
                         <div class="text-center lg:text-left buttons">
-                            <button type="button" @click="login(username)"
+                            <button type="button" @click="login(username, password)"
                                 class="inline-block button-login px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
                                 Login
                             </button>
 
-                             <button type="button" @click="returnToHome()"
+                            <button type="button" @click="returnToHome()"
                                 class="inline-block button-return px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
                                 Torna alla panoramica delle lezioni
                             </button>
@@ -60,31 +60,42 @@ export default {
     },
 
     methods: {
-        async loginApi(username) {
+        async loginApi(username, password) {
+
+            const data = {
+                username: username,
+                password: password
+            }
+
             const res = await fetch(
-                `http://localhost:8080/backend-unito-extraprof/login?username=${username}`, { credentials: 'same-origin' });
-            const data = await res.json();
-            return data;
+                `http://localhost:8080/backend-unito-extraprof/login`,
+                {
+                    method: "POST",
+                    body: JSON.stringify(data),
+
+                });
+            const response = await res.json();
+            return response;
 
         },
 
-         async login(username) {
-            this.resultLogin = await this.loginApi(username);
-            
+        async login(username, password) {
+            this.resultLogin = await this.loginApi(username, password);
+
             sessionStorage.name = this.resultLogin.name;
             sessionStorage.surname = this.resultLogin.surname;
             sessionStorage.role = this.resultLogin.role;
             sessionStorage.username = this.resultLogin.username;
             sessionStorage.token = this.resultLogin.token;
 
-           JSON.parse(localStorage.isLogged = true);
+            JSON.parse(localStorage.isLogged = true);
 
-           this.$router.push('/dashboard') 
+            this.$router.push('/dashboard')
 
         },
 
         returnToHome() {
-            this.$router.push('/') 
+            this.$router.push('/')
         }
 
 
@@ -93,13 +104,12 @@ export default {
 </script>
 
 <style scoped>
+button {
+    margin: 3%;
+}
 
-    button {
-        margin: 3%;
-    }
-
-    .button-login, .button-return {
-        background-color: #0a9396;
-    }
-
+.button-login,
+.button-return {
+    background-color: #0a9396;
+}
 </style>

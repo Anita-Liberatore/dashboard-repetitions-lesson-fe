@@ -84,7 +84,11 @@ export default {
         async fetchRepetitions() {
             var username = sessionStorage.getItem('username');
             const res = await fetch(
-                `http://localhost:8080/backend-unito-extraprof/repetitions?user=${username}`
+                `http://localhost:8080/backend-unito-extraprof/repetitions?user=${username}`,
+                {
+                    method: 'GET', credentials: 'same-origin',
+                    authentication: 'Bearer ' +sessionStorage.getItem('token') 
+                }
             );
             const data = await res.json();
             return data;

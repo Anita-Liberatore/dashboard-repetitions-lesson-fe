@@ -84,7 +84,7 @@ export default {
             courses: [],
             professors: [],
             associations: [],
-            repetitions: []
+            repetitions: [],
         };
     },
     computed: {
@@ -94,7 +94,6 @@ export default {
 
 
     },
-
     methods: {
         bukaside() {
             this.$store.state.sidebarmobile = true;
@@ -190,6 +189,14 @@ export default {
                     },
                 }
             );
+            this.associations = await this.fetchAssociations();
+
+             this.associations.some(element => {
+                if (element.idDocente == id) {
+                    alert("Il seguente professore è associato ad un corso! Non puoi eliminarlo");
+
+                }
+            });
             this.professors = await this.fetchProfessors();
         },
 
@@ -260,7 +267,16 @@ export default {
                         "Content-type": "application/json",
                     },
                 }
-            );
+            )
+            this.associations = await this.fetchAssociations();
+
+             this.associations.some(element => {
+                if (element.idCorso == id) {
+                    alert("Il seguente corso è associato ad un docente! Non puoi eliminarlo");
+
+                }
+            });
+            
             this.courses = await this.fetchCourses();
         },
 
