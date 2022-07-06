@@ -83,8 +83,9 @@ export default {
 
         async fetchRepetitions() {
             var username = sessionStorage.getItem('username');
+            var role = sessionStorage.getItem('role');
             const res = await fetch(
-                `http://localhost:8080/backend-unito-extraprof/repetitions?user=${username}`,
+                `http://localhost:8080/backend-unito-extraprof/repetitions?user=${username}&role=${role}`,
                 {
                     method: 'GET', credentials: 'same-origin',
                     authentication: 'Bearer ' +sessionStorage.getItem('token') 
@@ -117,7 +118,7 @@ export default {
         },
 
         async deleteRepetition(id) {
-            console.log(id)
+            var role = sessionStorage.getItem('role');
             const data = {
                 status: 'D'
             }
@@ -125,7 +126,7 @@ export default {
             console.log(data)
 
             const res = await fetch(
-                `http://localhost:8080/backend-unito-extraprof/repetitions?id=${id}`,
+                `http://localhost:8080/backend-unito-extraprof/repetitions?id=${id}&role=${role}`,
                 {
                     method: "POST",
                     mode: "no-cors", // 'cors' by default,
@@ -140,6 +141,7 @@ export default {
         },
 
         async doneRepetition(id) {
+            var role = sessionStorage.getItem('role');
             const data = {
                 status: 'E'
             }
@@ -147,7 +149,7 @@ export default {
             console.log(data)
 
             const res = await fetch(
-                `http://localhost:8080/backend-unito-extraprof/repetitions?id=${id}`,
+                `http://localhost:8080/backend-unito-extraprof/repetitions?id=${id}&role=${role}`,
                 {
                     method: "POST",
                     mode: "no-cors", // 'cors' by default,

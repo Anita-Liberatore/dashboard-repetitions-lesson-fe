@@ -114,8 +114,9 @@ export default {
         },
 
         async fetchCoursesForAdminPanelApi(professorId) {
+            var role = sessionStorage.getItem('role');
             const res = await fetch(
-                `http://localhost:8080/backend-unito-extraprof/admin-filter-panel?professor=${professorId}`
+                `http://localhost:8080/backend-unito-extraprof/admin-filter-panel?professor=${professorId}&role=${role}`
             );
             const data = await res.json();
             return data;
