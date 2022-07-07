@@ -108,14 +108,14 @@ export default {
         },
 
         async addAssociation(professorId, courseId) {
-
+            var role = sessionStorage.getItem('role');
             const data = {
                 idProfessor: professorId,
                 idCourse: courseId
             }
 
             const res = await fetch(
-                "http://localhost:8080/backend-unito-extraprof/associazioni",
+                 `http://localhost:8080/backend-unito-extraprof/associazioni?role=${role}`,
                 {
                     method: "POST",
                     mode: "no-cors", // 'cors' by default,
@@ -133,8 +133,9 @@ export default {
         },
 
         async fetchProfessors() {
+            var role = sessionStorage.getItem('role');
             const res = await fetch(
-                `http://localhost:8080/backend-unito-extraprof/professors`
+                `http://localhost:8080/backend-unito-extraprof/professors?role=${role}`
             );
             const data = await res.json();
             return data;
@@ -180,8 +181,9 @@ export default {
 
 
         async deleteProfessor(id) {
+            var role = sessionStorage.getItem('role')
             const res = await fetch(
-                `http://localhost:8080/backend-unito-extraprof/delete-professor?id=${id}`,
+                `http://localhost:8080/backend-unito-extraprof/delete-professor?id=${id}&role=${role}`,
                 {
                     mode: "no-cors", // 'cors' by default,
                     headers: {
@@ -214,7 +216,7 @@ export default {
         },
 
         async addProfessor(obj) {
-
+            var role = sessionStorage.getItem('role')
             this.professors.some(element => {
                 if (element.name.toLowerCase() == obj.name.toLowerCase() && element.surname.toLowerCase() == obj.surname.toLowerCase()) {
                     alert("Non puoi inserire docenti con lo stesso nome e cognome!");
@@ -223,7 +225,7 @@ export default {
             });
 
             const res = await fetch(
-                "http://localhost:8080/backend-unito-extraprof/professors",
+                `http://localhost:8080/backend-unito-extraprof/professors?role=${role}`,
                 {
                     method: "POST",
                     mode: "no-cors", // 'cors' by default,
@@ -259,8 +261,9 @@ export default {
         },
 
         async deleteCourse(id) {
+            var role = sessionStorage.getItem('role')
             const res = await fetch(
-                `http://localhost:8080/backend-unito-extraprof/delete-course?id=${id}`,
+                `http://localhost:8080/backend-unito-extraprof/delete-course?id=${id}&role=${role}`,
                 {
                     mode: "no-cors", // 'cors' by default,
                     headers: {
